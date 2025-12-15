@@ -28,8 +28,8 @@ def max_index(X):
 
     Returns
     -------
-    (i, j) : tuple(int)
-        The row and columnd index of the maximum.
+    (max_i_line, max_i_column) : tuple(int)
+        The row and column index of the maximum.
 
     Raises
     ------
@@ -37,12 +37,23 @@ def max_index(X):
         If the input is not a numpy array or
         if the shape is not 2D.
     """
-    i = 0
-    j = 0
-
-    # TODO
-
-    return i, j
+    if isinstance(X, np.ndarray):
+        X_shape = np.shape(X)
+        if (len(X_shape) == 2):
+            max_value = 0
+            max_i_line = 0
+            max_i_column = 0
+            for k in range(X_shape[1]):
+                for j in range(X_shape[0]):
+                    if X[j, k] >= max_value:
+                        max_value = X[j, k]
+                        max_i_line = j
+                        max_i_column = k
+            return (max_i_line, max_i_column)
+        else:
+            raise ValueError('Argument is not a 2D array.')
+    else:
+        raise ValueError('Argument is not an array.')
 
 
 def wallis_product(n_terms):
@@ -55,13 +66,16 @@ def wallis_product(n_terms):
     ----------
     n_terms : int
         Number of steps in the Wallis product. Note that `n_terms=0` will
-        consider the product to be `1`.
+        consider the product to be `2`.
 
     Returns
     -------
     pi : float
         The approximation of order `n_terms` of pi using the Wallis product.
     """
-    # XXX : The n_terms is an int that corresponds to the number of
-    # terms in the product. For example 10000.
-    return 0.
+    pi = 2
+
+    if n_terms > 0:
+        for k in range(1, n_terms+1):
+            pi = pi * (4*k**2)/(-1 + 4*k**2)
+    return pi
